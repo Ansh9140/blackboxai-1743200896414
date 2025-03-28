@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order - MedGo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="dashboard.html" class="text-2xl font-bold text-blue-600">MedGo</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 sm:px-0">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Order Summary -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Order Summary</h2>
+                    <div id="orderDetails" class="mb-6">
+                        <!-- Order details will be populated by JavaScript -->
+                    </div>
+                    <div class="border-t border-gray-200 pt-4">
+                        <div class="flex justify-between items-center text-lg font-semibold">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount">₹0.00</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">
+                            <i class="fas fa-clock text-blue-600"></i>
+                            Estimated delivery time: 10 minutes
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Delivery Details Form -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Delivery Details</h2>
+                    <form id="orderForm" onsubmit="return handleOrderSubmit(event)">
+                        <div class="space-y-4">
+                            <!-- Full Name -->
+                            <div>
+                                <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+
+                            <!-- Delivery Address -->
+                            <div>
+                                <label for="address" class="block text-sm font-medium text-gray-700">Delivery Address</label>
+                                <textarea id="address" name="address" rows="3" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+                            </div>
+
+                            <!-- Landmark -->
+                            <div>
+                                <label for="landmark" class="block text-sm font-medium text-gray-700">Landmark (Optional)</label>
+                                <input type="text" id="landmark" name="landmark"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+
+                            <!-- Special Instructions -->
+                            <div>
+                                <label for="instructions" class="block text-sm font-medium text-gray-700">Special Instructions (Optional)</label>
+                                <textarea id="instructions" name="instructions" rows="2"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    placeholder="Any specific instructions for delivery"></textarea>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input type="radio" id="cod" name="paymentMethod" value="cod" checked
+                                            class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                                        <label for="cod" class="ml-3 block text-sm font-medium text-gray-700">
+                                            Cash on Delivery
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="radio" id="online" name="paymentMethod" value="online"
+                                            class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                                        <label for="online" class="ml-3 block text-sm font-medium text-gray-700">
+                                            Online Payment
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Place Order Button -->
+                        <div class="mt-6">
+                            <button type="submit"
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Place Order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Alert (Hidden by default) -->
+    <div id="errorAlert" class="hidden fixed bottom-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded" role="alert">
+        <span class="block sm:inline" id="errorMessage"></span>
+    </div>
+
+    <script>
+        // Load order details when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            const selectedMedicine = JSON.parse(localStorage.getItem('selectedMedicine'));
+            if (!selectedMedicine) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Update order details
+            document.getElementById('orderDetails').innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">${selectedMedicine.name}</h3>
+                        <p class="text-gray-500">Quantity: 1</p>
+                    </div>
+                    <span class="text-lg font-semibold">₹${selectedMedicine.price.toFixed(2)}</span>
+                </div>
+            `;
+
+            // Update total amount
+            document.getElementById('totalAmount').textContent = `₹${selectedMedicine.price.toFixed(2)}`;
+        });
+
+        function handleOrderSubmit(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+
+            // Basic validation
+            if (fullName.length < 2) {
+                showError('Please enter a valid name');
+                return false;
+            }
+
+            const phoneRegex = /^\+?[\d\s-]{10,}$/;
+            if (!phoneRegex.test(phone)) {
+                showError('Please enter a valid phone number');
+                return false;
+            }
+
+            if (address.length < 10) {
+                showError('Please enter a complete delivery address');
+                return false;
+            }
+
+            // Simulate order placement
+            const selectedMedicine = JSON.parse(localStorage.getItem('selectedMedicine'));
+            const orderDetails = {
+                medicine: selectedMedicine,
+                customerName: fullName,
+                phone: phone,
+                address: address,
+                landmark: document.getElementById('landmark').value,
+                instructions: document.getElementById('instructions').value,
+                paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
+            };
+
+            // Store order details and redirect to confirmation page
+            localStorage.setItem('currentOrder', JSON.stringify(orderDetails));
+            window.location.href = 'order-confirmation.html';
+
+            return false;
+        }
+
+        function showError(message) {
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorAlert.classList.remove('hidden');
+            
+            setTimeout(() => {
+                errorAlert.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
