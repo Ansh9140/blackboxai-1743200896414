@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - MedGo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        .progress-bar {
+            transition: width 1s linear;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="dashboard.html" class="text-2xl font-bold text-blue-600">MedGo</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Success Message -->
+        <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-green-700">
+                        Order placed successfully! Your medicines will be delivered in 10 minutes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 sm:px-0">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Order Details -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Order Details</h2>
+                    <div id="orderSummary" class="space-y-4">
+                        <!-- Order details will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Delivery Tracking -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Delivery Tracking</h2>
+                    
+                    <!-- Countdown Timer -->
+                    <div class="mb-8 text-center">
+                        <div class="text-4xl font-bold text-blue-600 mb-2" id="countdown">10:00</div>
+                        <p class="text-gray-600">Estimated time remaining</p>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="mb-8">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Stages -->
+                    <div class="space-y-6">
+                        <div class="flex items-center" id="orderConfirmed">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">Order Confirmed</p>
+                                <p class="text-sm text-gray-500" id="orderConfirmedTime"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center" id="preparingOrder">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center" id="preparingIcon">
+                                    <i class="fas fa-box text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">Preparing Your Order</p>
+                                <p class="text-sm text-gray-500" id="preparingTime"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center" id="outForDelivery">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center" id="deliveryIcon">
+                                    <i class="fas fa-motorcycle text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">Out for Delivery</p>
+                                <p class="text-sm text-gray-500" id="deliveryTime"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center" id="delivered">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center" id="deliveredIcon">
+                                    <i class="fas fa-home text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">Delivered</p>
+                                <p class="text-sm text-gray-500" id="deliveredTime"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Map -->
+                    <div class="mt-8">
+                        <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2831&q=80" 
+                            alt="Delivery Map" 
+                            class="w-full h-48 object-cover rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load order details
+        window.addEventListener('DOMContentLoaded', function() {
+            const orderDetails = JSON.parse(localStorage.getItem('currentOrder'));
+            if (!orderDetails) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Update order summary
+            document.getElementById('orderSummary').innerHTML = `
+                <div class="space-y-2">
+                    <p><span class="font-semibold">Order ID:</span> #${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+                    <p><span class="font-semibold">Medicine:</span> ${orderDetails.medicine.name}</p>
+                    <p><span class="font-semibold">Amount:</span> ₹${orderDetails.medicine.price.toFixed(2)}</p>
+                    <p><span class="font-semibold">Payment Method:</span> ${orderDetails.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}</p>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200 space-y-2">
+                    <p><span class="font-semibold">Delivery To:</span> ${orderDetails.customerName}</p>
+                    <p><span class="font-semibold">Phone:</span> ${orderDetails.phone}</p>
+                    <p><span class="font-semibold">Address:</span> ${orderDetails.address}</p>
+                    ${orderDetails.landmark ? `<p><span class="font-semibold">Landmark:</span> ${orderDetails.landmark}</p>` : ''}
+                    ${orderDetails.instructions ? `<p><span class="font-semibold">Instructions:</span> ${orderDetails.instructions}</p>` : ''}
+                </div>
+            `;
+
+            // Start countdown and tracking updates
+            startCountdown();
+            updateDeliveryStatus();
+        });
+
+        function startCountdown() {
+            let timeLeft = 600; // 10 minutes in seconds
+            const countdownEl = document.getElementById('countdown');
+            const progressBar = document.querySelector('.progress-bar');
+
+            const timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                countdownEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update progress bar
+                const progress = ((600 - timeLeft) / 600) * 100;
+                progressBar.style.width = `${progress}%`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdownEl.textContent = "00:00";
+                    progressBar.style.width = "100%";
+                    document.getElementById('deliveredIcon').classList.add('bg-blue-600');
+                    document.getElementById('deliveredIcon').querySelector('i').classList.add('text-white');
+                } else {
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        function updateDeliveryStatus() {
+            const stages = [
+                { id: 'orderConfirmed', time: 0 },
+                { id: 'preparingOrder', time: 2 },
+                { id: 'outForDelivery', time: 5 },
+                { id: 'delivered', time: 10 }
+            ];
+
+            const startTime = new Date();
+
+            stages.forEach(stage => {
+                const time = new Date(startTime.getTime() + stage.time * 60000);
+                document.getElementById(`${stage.id}Time`).textContent = 
+                    `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+            });
+
+            // Update status icons
+            setTimeout(() => {
+                document.getElementById('preparingIcon').classList.add('bg-blue-600');
+                document.getElementById('preparingIcon').querySelector('i').classList.add('text-white');
+            }, 2000);
+
+            setTimeout(() => {
+                document.getElementById('deliveryIcon').classList.add('bg-blue-600');
+                document.getElementById('deliveryIcon').querySelector('i').classList.add('text-white');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
